@@ -31,5 +31,9 @@ func (c *client) DoRefreshToken() (string, string, error) {
 		return "", "", err
 	}
 
+	if response.Error != 0 {
+		return "", "", fmt.Errorf("error code: %d, message: %s", response.Error, response.ErrorName)
+	}
+
 	return response.AccessToken, response.RefreshToken, nil
 }

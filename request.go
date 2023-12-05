@@ -13,9 +13,14 @@ func (r DoRefreshTokenRequest) ToString() string {
 }
 
 type DoRefreshTokenResponse struct {
-	AccessToken  string `json:"access_token"`
-	RefreshToken string `json:"refresh_token"`
-	ExpiresIn    string `json:"expires_in"`
+	AccessToken      string `json:"access_token,omitempty"`
+	RefreshToken     string `json:"refresh_token,omitempty"`
+	ExpiresIn        string `json:"expires_in,omitempty"`
+	ErrorName        string `json:"error_name,omitempty"`
+	ErrorReason      string `json:"error_reason,omitempty"`
+	RefDoc           string `json:"ref_doc,omitempty"`
+	ErrorDescription string `json:"error_description,omitempty"`
+	Error            int    `json:"error,omitempty"`
 }
 
 type GetConversationsResponse struct {
