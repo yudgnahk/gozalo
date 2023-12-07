@@ -24,47 +24,15 @@ type DoRefreshTokenResponse struct {
 }
 
 type GetConversationsResponse struct {
-	Data []struct {
-		Src             int    `json:"src"`
-		Time            int64  `json:"time"`
-		SentTime        string `json:"sent_time"`
-		FromId          string `json:"from_id"`
-		FromDisplayName string `json:"from_display_name"`
-		FromAvatar      string `json:"from_avatar"`
-		ToId            string `json:"to_id"`
-		ToDisplayName   string `json:"to_display_name"`
-		ToAvatar        string `json:"to_avatar"`
-		MessageId       string `json:"message_id"`
-		Type            string `json:"type"`
-		Thumb           string `json:"thumb,omitempty"`
-		Url             string `json:"url,omitempty"`
-		Description     string `json:"description,omitempty"`
-		Message         string `json:"message,omitempty"`
-	} `json:"data"`
-	Error   int    `json:"error"`
-	Message string `json:"message"`
+	Data    []MessageDetail `json:"data"`
+	Error   int             `json:"error"`
+	Message string          `json:"message"`
 }
 
 type GetConversationDetailResponse struct {
-	Data []struct {
-		Src             int    `json:"src"`
-		Time            int64  `json:"time"`
-		SentTime        string `json:"sent_time"`
-		FromId          string `json:"from_id"`
-		FromDisplayName string `json:"from_display_name"`
-		FromAvatar      string `json:"from_avatar"`
-		ToId            string `json:"to_id"`
-		ToDisplayName   string `json:"to_display_name"`
-		ToAvatar        string `json:"to_avatar"`
-		MessageId       string `json:"message_id"`
-		Type            string `json:"type"`
-		Url             string `json:"url,omitempty"`
-		Message         string `json:"message,omitempty"`
-		Thumb           string `json:"thumb,omitempty"`
-		Description     string `json:"description,omitempty"`
-	} `json:"data"`
-	Error   int    `json:"error"`
-	Message string `json:"message"`
+	Data    []MessageDetail `json:"data"`
+	Error   int             `json:"error"`
+	Message string          `json:"message"`
 }
 
 type SendMessageRequest struct {
@@ -72,8 +40,20 @@ type SendMessageRequest struct {
 		UserId string `json:"user_id"`
 	} `json:"recipient"`
 	Message struct {
+		Attachment struct {
+			Payload struct {
+				Elements     []AttachmentElement `json:"elements"`
+				TemplateType string              `json:"template_type"`
+			} `json:"payload"`
+			Type string `json:"type"`
+		} `json:"attachment"`
 		Text string `json:"text"`
 	} `json:"message"`
+}
+
+type AttachmentElement struct {
+	MediaType    string `json:"media_type"`
+	AttachmentId string `json:"attachment_id"`
 }
 
 type SendMessageResponse struct {
@@ -83,4 +63,36 @@ type SendMessageResponse struct {
 	} `json:"data"`
 	Error   int    `json:"error"`
 	Message string `json:"message"`
+}
+
+type UploadImageResponse struct {
+	Data struct {
+		AttachmentID string `json:"attachment_id"`
+	} `json:"data"`
+	Error   int    `json:"error"`
+	Message string `json:"message"`
+}
+
+type MessageDetail struct {
+	Src             int    `json:"src"`
+	Time            int64  `json:"time"`
+	SentTime        string `json:"sent_time"`
+	FromId          string `json:"from_id"`
+	FromDisplayName string `json:"from_display_name"`
+	FromAvatar      string `json:"from_avatar"`
+	ToId            string `json:"to_id"`
+	ToDisplayName   string `json:"to_display_name"`
+	ToAvatar        string `json:"to_avatar"`
+	MessageId       string `json:"message_id"`
+	Type            string `json:"type"`
+	Url             string `json:"url,omitempty"`
+	Message         string `json:"message,omitempty"`
+	Thumb           string `json:"thumb,omitempty"`
+	Description     string `json:"description,omitempty"`
+}
+
+type SendMessageDetailResponse struct {
+	Data    MessageDetail `json:"data"`
+	Error   int           `json:"error"`
+	Message string        `json:"message"`
 }

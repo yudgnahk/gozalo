@@ -52,22 +52,35 @@ func (c *client) GetConversationDetail(userID string, count, offset int) (GetCon
 	return conversationDetail, err
 }
 
-func (c *client) SendMessage(userID string, message string) (SendMessageResponse, error) {
+func (c *client) SendMessage(userID string, message string, attachmentID *string) (SendMessageDetailResponse, error) {
 	reqUrl := fmt.Sprintf("%s/%s", OpenAPIV3, SendMessagePath)
 
 	var req SendMessageRequest
 	req.Recipient.UserId = userID
-	req.Message.Text = message
+
+	if attachmentID != nil {
+		req.Message.Attachment.Payload.Elements = []AttachmentElement{
+			{
+				AttachmentId: *attachmentID,
+				MediaType:    "image",
+			},
+		}
+
+		req.Message.Attachment.Payload.TemplateType = "media"
+		req.Message.Attachment.Type = "template"
+	} else {
+		req.Message.Text = message
+	}
 
 	// marshal request data
 	data, err := json.Marshal(req)
 	if err != nil {
-		return SendMessageResponse{}, fmt.Errorf("error marshall request: %w", err)
+		return SendMessageDetailResponse{}, fmt.Errorf("error marshall request: %w", err)
 	}
 
 	request, err := httputils.NewRequest(http.MethodPost, reqUrl, bytes.NewBuffer(data))
 	if err != nil {
-		return SendMessageResponse{}, err
+		return SendMessageDetailResponse{}, err
 	}
 
 	request.Header.Add("Content-Type", "application/json")
@@ -76,8 +89,30 @@ func (c *client) SendMessage(userID string, message string) (SendMessageResponse
 	var response SendMessageResponse
 	err = httputils.Execute(request, &response)
 	if err != nil {
-		return SendMessageResponse{}, err
+		return SendMessageDetailResponse{}, err
 	}
 
-	return response, nil
+	if response.Error != ErrCodeSuccess {
+		return SendMessageDetailResponse{
+			Error:   response.Error,
+			Message: response.Message,
+		}, nil
+	}
+
+	// get latest message of user_id
+	conversationDetail, err := c.GetConversationDetail(userID, 1, 0)
+	if err != nil {
+		return SendMessageDetailResponse{}, err
+	}
+
+	if conversationDetail.Error != ErrCodeSuccess {
+		return SendMessageDetailResponse{
+			Error:   conversationDetail.Error,
+			Message: conversationDetail.Message,
+		}, nil
+	}
+
+	return SendMessageDetailResponse{
+		Data: conversationDetail.Data[0],
+	}, nil
 }

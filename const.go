@@ -9,10 +9,12 @@ const (
 	GetConversationsPath      = "oa/listrecentchat"
 	GetConversationDetailPath = "oa/conversation"
 
+	UploadImagePath = "oa/upload/image"
 	SendMessagePath = "oa/message/cs"
 )
 
 const (
-	ErrCodeSuccess      = 0
-	ErrCodeTokenExpired = -216
+	ErrCodeSuccess            = 0
+	ErrCodeTokenExpired       = -216
+	ErrCodeUploadTokenExpired = -155
 )

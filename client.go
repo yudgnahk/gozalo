@@ -12,7 +12,8 @@ type Client interface {
 	DoRefreshToken() (string, string, error)
 	GetConversations(count, offset int) (GetConversationsResponse, error)
 	GetConversationDetail(userID string, count, offset int) (GetConversationDetailResponse, error)
-	SendMessage(userID string, message string) (SendMessageResponse, error)
+	SendMessage(userID string, message string, attachmentID *string) (SendMessageDetailResponse, error)
+	UploadImage(path string) (*UploadImageResponse, error)
 }
 
 // NewClient returns a new Zalo OA API client.
