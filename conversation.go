@@ -59,6 +59,7 @@ func (c *client) SendMessage(userID string, message string, attachmentID *string
 	req.Recipient.UserId = userID
 
 	if attachmentID != nil {
+		req.Message.Attachment = &SendAttachmentPayload{}
 		req.Message.Attachment.Payload.Elements = []AttachmentElement{
 			{
 				AttachmentId: *attachmentID,
@@ -70,6 +71,7 @@ func (c *client) SendMessage(userID string, message string, attachmentID *string
 		req.Message.Attachment.Type = "template"
 	} else {
 		req.Message.Text = message
+		req.Message.Attachment = nil
 	}
 
 	// marshal request data

@@ -40,15 +40,17 @@ type SendMessageRequest struct {
 		UserId string `json:"user_id"`
 	} `json:"recipient"`
 	Message struct {
-		Attachment struct {
-			Payload struct {
-				Elements     []AttachmentElement `json:"elements"`
-				TemplateType string              `json:"template_type"`
-			} `json:"payload"`
-			Type string `json:"type"`
-		} `json:"attachment"`
-		Text string `json:"text"`
+		Attachment *SendAttachmentPayload `json:"attachment"`
+		Text       string                 `json:"text"`
 	} `json:"message"`
+}
+
+type SendAttachmentPayload struct {
+	Payload struct {
+		Elements     []AttachmentElement `json:"elements"`
+		TemplateType string              `json:"template_type"`
+	} `json:"payload"`
+	Type string `json:"type"`
 }
 
 type AttachmentElement struct {
