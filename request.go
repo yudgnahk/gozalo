@@ -98,3 +98,25 @@ type SendMessageDetailResponse struct {
 	Error   int           `json:"error"`
 	Message string        `json:"message"`
 }
+
+type GetUserResponse struct {
+	Data struct {
+		Avatar  string `json:"avatar"`
+		Avatars struct {
+			Field1 string `json:"120"`
+			Field2 string `json:"240"`
+		} `json:"avatars"`
+		UserGender       int    `json:"user_gender"`
+		UserId           string `json:"user_id"`
+		UserIdByApp      string `json:"user_id_by_app"`
+		IsSensitive      bool   `json:"is_sensitive"`
+		DisplayName      string `json:"display_name"`
+		BirthDate        int    `json:"birth_date"`
+		TagsAndNotesInfo struct {
+			Notes    []interface{} `json:"notes"`
+			TagNames []interface{} `json:"tag_names"`
+		} `json:"tags_and_notes_info"`
+	} `json:"data"`
+	Error   int    `json:"error"`
+	Message string `json:"message"`
+}

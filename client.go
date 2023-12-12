@@ -14,6 +14,7 @@ type Client interface {
 	GetConversationDetail(userID string, count, offset int) (GetConversationDetailResponse, error)
 	SendMessage(userID string, message string, attachmentID *string) (SendMessageDetailResponse, error)
 	UploadImage(path string) (*UploadImageResponse, error)
+	GetUser(id string) (GetUserResponse, error)
 }
 
 // NewClient returns a new Zalo OA API client.

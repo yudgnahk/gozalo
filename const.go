@@ -8,6 +8,7 @@ const (
 	RefreshTokenPath          = "oa/access_token"
 	GetConversationsPath      = "oa/listrecentchat"
 	GetConversationDetailPath = "oa/conversation"
+	GetUserPath               = "oa/getprofile"
 
 	UploadImagePath = "oa/upload/image"
 	SendMessagePath = "oa/message/cs"
